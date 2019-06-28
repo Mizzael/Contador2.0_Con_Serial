@@ -19,6 +19,7 @@ char Dato;
 #INT_RDA
 void isrRDA (void) {            
    Dato=getc();
+   FlagSerial=1;
 }   
 //int_timer0
 
@@ -42,7 +43,27 @@ void main(void){
    
 while(1){
       if(FlagSerial==1){
-         //if()
+         if((Dato&0x69)>0x00){
+            FlagContador1=1;
+         }
+         else{
+            FlagContador1=0;
+         }
+         
+         if((Dato&0x92)>0x00){
+            FlagContador2=1;
+         }
+         else{
+            FlagContador2=0;
+         }
+         
+         if((Dato&0x24)>0x00){
+            FlagContador3=1;
+         }
+         else{
+            FlagContador3=0;
+         }
+         
          
          FlagSerial=0;
       }
