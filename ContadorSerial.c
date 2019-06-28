@@ -4,6 +4,8 @@
 #use delay(clock=32 MHZ)
 
 //Aqui deben ir las interfaces tales como la rs-232, I^2C
+#define TamMax 10
+
 
 #define _DEBUG_SERIAL_
 #ifdef _DEBUG_SERIAL_
@@ -15,12 +17,17 @@
 //Aqui deben ir la IsR's interrupciones
 
 int  FlagSerial;
-char Dato;
+char IndiceBuffer=0;
+char Buffer[TamMax];
 
 #INT_RDA
 void isrRDA (void) {            
-   Dato=getc();
-   FlagSerial=1;   
+   Buffer[IndiceBuffer]=getc();
+   FlagSerial = 1;
+   IndiceBuffer++;
+   if(IndiceBuffer>TamMax){
+   IndiceBuffer=0;
+   }
 }   
 //int_timer0
 
@@ -45,24 +52,24 @@ void main(void){
    
 while(1){
       if(FlagSerial==1){
-         putc(Dato);
+         putc(Buffer[IndiceBuffer-1]);
          FlagSerial=0;
       }  
-         if((Dato&0x09)>0x00){
+         if((Buffer[IndiceBuffer-1]&0x49)>0x00){
             FlagContador1=1;
          }
          else{
             FlagContador1=0;
          }
          
-         if((Dato&0x12)>0x00){
+         if((Buffer[IndiceBuffer-1]&0x92)>0x00){
             FlagContador2=1;
          }
          else{
             FlagContador2=0;
          }
          
-         if((Dato&0x24)>0x00){
+         if((Buffer[IndiceBuffer-1]&0x24)>0x00){
             FlagContador3=1;
          }
          else{
