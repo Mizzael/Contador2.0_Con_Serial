@@ -28,9 +28,7 @@ void isrRDA (void) {
    IndiceBuffer=0;
    }
 }
-   //int_timer0
-
-//variables globales
+//int_timer0
 
 //aqui el void main(void)
 void main(void){
@@ -38,8 +36,15 @@ void main(void){
    set_tris_a(0x00);
    set_tris_b(0x00);
    set_tris_d(0x00);
+   enable_interrupts(global);
+   enable_interrupts(int_rda);
+   
 while(1){
+      if(FlagSerial==1){
+         putc(Buffer[IndiceBuffer-1]);
+         FlagSerial=0;
+      }
       
-}
+   }
 }
 
