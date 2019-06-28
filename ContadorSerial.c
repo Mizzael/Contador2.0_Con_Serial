@@ -64,10 +64,32 @@ while(1){
             FlagContador3=0;
          }
          
+         if(FlagContador1==1){
+            ContadorA=ContadorA<<1;
+            if(ContadorA==0x80){
+                  ContadorA=0x01;
+            }
+         }
          
+         if(FlagContador2==1){
+            ContadorB=ContadorB>>1;
+            if(ContadorB==0x01){
+               ContadorB=0x80;
+            }
+         }
+         
+         if(FlagContador3==1){
+            ContadorD=ContadorD<<2;
+            if(ContadorD==0xC0){
+               ContadorD=0x03;
+            }
+         }
          FlagSerial=0;
       }
-      
+      output_a(ContadorA);
+      output_b(ContadorB);
+      output_d(ContadorD);
+      delay_ms(100);
    }
 }
 
