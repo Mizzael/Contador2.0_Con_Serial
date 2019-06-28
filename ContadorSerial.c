@@ -1,6 +1,7 @@
 #include <18F4620.h>
-#fuses HS,NOWDT,NOMCLR
-#use delay(clock=16 MHZ)
+#fuses HS, NOFCMEN, NOIESO, PUT, NOBROWNOUT, NOWDT
+#fuses NOPBADEN, NOMCLR, STVREN, NOLVP, NODEBUG,INTRC_IO
+#use delay(clock=32 MHZ)
 
 //Aqui deben ir las interfaces tales como la rs-232, I^2C
 
@@ -19,7 +20,9 @@ char Dato;
 #INT_RDA
 void isrRDA (void) {            
    Dato=getc();
-   FlagSerial=1;   
+   if(Dato>0x00){
+      FlagSerial=1;   
+   }
 }   
 //int_timer0
 
@@ -31,6 +34,7 @@ void main(void){
    set_tris_d(0x00);
    enable_interrupts(global);
    enable_interrupts(int_rda);
+   setup_oscillator(OSC_32MHZ);
    
    int ContadorA=0x01;
    int ContadorB=0x80;
