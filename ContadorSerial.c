@@ -4,8 +4,6 @@
 
 //Aqui deben ir las interfaces tales como la rs-232, I^2C
 
-#define MaxTam 10
-
 #define _DEBUG_SERIAL_
 #ifdef _DEBUG_SERIAL_
    #define TX_232    PIN_C6
@@ -15,19 +13,13 @@
 #endif
 //Aqui deben ir la IsR's interrupciones
 
-char IndiceBuffer=0;
 int  FlagSerial;
-char Buffer[MaxTam];
+char Dato;
 
 #INT_RDA
 void isrRDA (void) {            
-   Buffer[IndiceBuffer]=getc();
-   FlagSerial = 1;
-   IndiceBuffer++;
-   if(IndiceBuffer>MaxTam){
-   IndiceBuffer=0;
-   }
-}
+   Dato=getc();
+}   
 //int_timer0
 
 //aqui el void main(void)
@@ -39,9 +31,19 @@ void main(void){
    enable_interrupts(global);
    enable_interrupts(int_rda);
    
+   int ContadorA=0x01;
+   int ContadorB=0x80;
+   int ContadorD=0x03;
+   
+   int FlagContador1=0;
+   int FlagContador2=0;
+   int FlagContador3=0;
+   
+   
 while(1){
       if(FlagSerial==1){
-         putc(Buffer[IndiceBuffer-1]);
+         //if()
+         
          FlagSerial=0;
       }
       
