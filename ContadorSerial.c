@@ -19,7 +19,7 @@ char Dato;
 #INT_RDA
 void isrRDA (void) {            
    Dato=getc();
-   FlagSerial=1;
+   FlagSerial=1;   
 }   
 //int_timer0
 
@@ -43,14 +43,16 @@ void main(void){
    
 while(1){
       if(FlagSerial==1){
-         if((Dato&0x69)>0x00){
+         putc(Dato);
+         FlagSerial=0;
+         if((Dato&0x09)>0x00){
             FlagContador1=1;
          }
          else{
             FlagContador1=0;
          }
          
-         if((Dato&0x92)>0x00){
+         if((Dato&0x12)>0x00){
             FlagContador2=1;
          }
          else{
@@ -70,21 +72,18 @@ while(1){
                   ContadorA=0x01;
             }
          }
-         
          if(FlagContador2==1){
             ContadorB=ContadorB>>1;
             if(ContadorB==0x01){
                ContadorB=0x80;
             }
-         }
-         
+         } 
          if(FlagContador3==1){
             ContadorD=ContadorD<<2;
             if(ContadorD==0xC0){
                ContadorD=0x03;
             }
          }
-         FlagSerial=0;
       }
       output_a(ContadorA);
       output_b(ContadorB);
